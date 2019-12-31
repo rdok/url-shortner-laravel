@@ -26,8 +26,8 @@ dmysql() {
 dnpm() {
     docker run \
         --rm \
-        --name spacex-explorer_npm-dev \
-        --volume "/$(pwd)":"/app" \
+        --name "${PROJECT_NAME}_npm-dev" \
+        --volume "/$(pwd)":"//app" \
         --workdir //app \
         -it \
         node:8-alpine3.11 npm \
@@ -35,5 +35,5 @@ dnpm() {
 }
 
 ddusk() {
-  docker_compose_dev run --rm  -it dusk php artisan dusk "$@"
+  docker_compose_dev run --rm dusk php artisan dusk "$@"
 }

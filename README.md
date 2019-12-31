@@ -11,11 +11,13 @@ dphp artisan migrate
 dnpm install
 dnpm run dev
 
-# visit http://localhost:3000
+# visit http://localhost:3001
 ```
 
 ##### Database
-`dmysql -uroot -psecret`
+```
+dmysql -uroot -psecret
+```
 
 **Test**
 ```
