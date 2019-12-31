@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+
+  php:
+    build:
+      context: web
+      dockerfile: ./docker/php/production.docker
+      args:
+        - COMPOSE_PROJECT_NAME
+    environment:
+      - DB_PASSWORD
+      - APP_KEY
+      - APP_URL="https://${VIRTUAL_HOST}"
+    command: sh -c "
+      /wait-for db:3306
+      && php-fpm
+      "
+  web:
+    build:
+      context: web
+      dockerfile: ./docker/web/production.docker
+      args:
+        - COMPOSE_PROJECT_NAME
+    environment:
+      - VIRTUAL_HOST
+      - LETSENCRYPT_HOST
+      - LETSENCRYPT_EMAIL
+    networks:
+      - frontend
+      - backend
+networks:
+  frontend:
+    external:
+      name: nginx-proxy

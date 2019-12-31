@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+
+  src:
+    build:
+      context: .
+      dockerfile: ./docker/src/Dockerfile
+      args:
+        - COMPOSE_PROJECT_NAME

@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  php:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/php/infrastructure.docker
+    command: /wait-for db:3306 -- php-fpm
+    networks:
+      - backend
+
+  db:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${DB_PASSWORD}"
+    networks:
+      - backend
+
+  web:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/web/infrastructure.docker
+    command: /wait-for php:9000 -- nginx -g 'daemon off;'
+    networks:
+      - backend
+
+volumes:
+  db:
+
+networks:
+  backend:
