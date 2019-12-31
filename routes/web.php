@@ -19,4 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('s/{shortened_url}', 'ShortenedUrlController@create');
+Route::get('s/{slug}', 'UrlController@show');
+Route::post('s', 'UrlController@store');
