@@ -19,8 +19,6 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
-        static::useChromedriver(realpath(__DIR__ . '/../../home/chromedrive'));
-
         static::startChromeDriver();
     }
 
