@@ -20,5 +20,3 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('urls', 'UrlController')->only(['store']);
-
-Route::get('s/{slug}', 'UrlController@show');

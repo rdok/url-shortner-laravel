@@ -14,7 +14,7 @@ class CreateUrlsTable extends Migration
             $table->unsignedBigInteger('author_id')->nullable();
             $table->foreign('author_id')->references('id')->on('users');
             $table->text('target');
-            $table->string('slug');
+            $table->string('slug')->unique();
         });
     }
 

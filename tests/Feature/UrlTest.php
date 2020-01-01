@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Url;
 use App\User;
 use Faker\Generator;
 use Mockery\Mock;
@@ -18,16 +17,6 @@ class UrlTest extends TestCase
         parent::setUp();
 
         $this->url = 'https://www.youtube.com/watch?v=qIcTM8WXFjk&t=6s';
-    }
-
-    /** @test */
-    public function redirect_to_url()
-    {
-        /** @var Url $url */
-        $url = factory(Url::class)->create();
-
-        $this->get($url->path())
-            ->assertRedirect($url->target);
     }
 
     /** @test */
@@ -74,11 +63,12 @@ class UrlTest extends TestCase
     }
 
     /** @test */
-    public function should_validate_requests()
+    public function should_validate_store_requests()
     {
         $this->post('urls')
-            ->assertExactJson([
-                'url' => ['The url field is required.']
-            ]);
+            ->assertExactJson(['url' => ['The url field is required.']]);
+
+        $this->post('urls', ['url' => 'invalid'])
+            ->assertExactJson(['url' => ['The url format is invalid.']]);
     }
 }

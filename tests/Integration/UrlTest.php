@@ -49,10 +49,4 @@ class UrlTest extends TestCase
             'author_id' => $user->id,
         ]);
     }
-
-    /** @test */
-    public function should_not_generate_duplicate_short_urls()
-    {
-        $this->markTestIncomplete();
-    }
 }

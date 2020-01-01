@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -51,10 +50,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        $shouldThrow = app()->environment('testing');
-        $shouldThrow &= ! $exception instanceof ValidationException;
-
-        if ($shouldThrow) {
+        if (app()->environment('testing')) {
             throw $exception;
         }
 

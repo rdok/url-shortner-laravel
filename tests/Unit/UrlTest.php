@@ -3,8 +3,6 @@
 namespace Tests\Unit;
 
 use App\Url;
-use Faker\Generator;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use PHPUnit\Framework\TestCase;
 
 class UrlTest extends TestCase

@@ -12,7 +12,7 @@ class StoreUrlRequest extends JsonFormRequest
     public function rules()
     {
         return [
-            'url' => 'required'
+            'url' => 'required|url'
         ];
     }
 }

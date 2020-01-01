@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUrlRequest;
+use App\Services\UrlRepository;
 use App\Url;
-use Faker\Generator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UrlController extends Controller
 {
@@ -17,17 +15,9 @@ class UrlController extends Controller
         return redirect($url->target);
     }
 
-    public function store(StoreUrlRequest $request, Generator $generator)
+    public function store(StoreUrlRequest $request, UrlRepository $repository)
     {
-        $url = new Url([
-            'slug' => $generator->regexify('[A-Za-z0-9$\-_.+!*\'(),]{3,7}'),
-            'target' => $request->get('url')
-        ]);
-
-        $user = Auth::user();
-
-        $user ? $url->author()->associate($user)->save()
-            : $url->save();
+        $url = $repository->store($request->only('url'));
 
         return response()->json([
             'slug' => $url->slug,
