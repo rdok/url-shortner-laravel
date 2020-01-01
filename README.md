@@ -23,6 +23,7 @@ dmysql -uroot -psecret
 ```
 dphp artisan migrate --env=testing
 dphp ./vendor/bin/phpunit
+dphp artisan migrate --env=dusk.local
 ddusk
 ```
 
