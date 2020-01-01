@@ -15,6 +15,10 @@ dphp() {
     docker_compose_dev exec php php "$@"
 }
 
+dpt() {
+    docker_compose_dev exec php php ./vendor/bin/phpunit "$@"
+}
+
 dcomposer() {
     docker_compose_dev exec php composer "$@"
 }

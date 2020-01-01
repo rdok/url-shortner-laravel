@@ -3,22 +3,56 @@
 namespace Tests\Integration;
 
 use App\Url;
+use App\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Tests\TestCase;
 
 class UrlTest extends TestCase
 {
-    /** @test */
-    public function should_have_fillables()
+    /** @var array */
+    private $fillables;
+
+    public function setUp(): void
     {
-        $fillables = [
+        parent::setUp();
+
+        $this->fillables = [
             'target' => 'https://www.youtube.com/channel/UC4zyoIAzmdsgpDZQfO1-lSA',
             'slug' => 'some-slug'
         ];
+    }
 
-        $this->assertDatabaseMissing('urls', $fillables);
+    /** @test */
+    public function should_have_fillables()
+    {
+        $this->assertDatabaseMissing('urls', $this->fillables);
 
-        (new Url($fillables))->save();
+        (new Url($this->fillables))->save();
 
-        $this->assertDatabaseHas('urls', $fillables);
+        $this->assertDatabaseHas('urls', $this->fillables);
+    }
+
+    /** @test */
+    public function may_have_author()
+    {
+        $user = factory(User::class)->create();
+        /** @var Url $url */
+        $url = factory(Url::class, 'fillable')->create();
+
+        $this->assertDatabaseMissing('urls', ['author_id' => $user->id]);
+
+        $this->assertInstanceOf(BelongsTo::class, $url->author());
+        $url->author()->associate($user)->save();
+
+        $this->assertDatabaseHas('urls', [
+            'id' => $url->id,
+            'author_id' => $user->id,
+        ]);
+    }
+
+    /** @test */
+    public function should_not_generate_duplicate_short_urls()
+    {
+        $this->markTestIncomplete();
     }
 }

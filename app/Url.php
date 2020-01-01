@@ -13,8 +13,13 @@ class Url extends Model
         return 'slug';
     }
 
-    public function path()
+    function path()
     {
         return sprintf('s/%s', $this->slug);
+    }
+
+    function author()
+    {
+        return $this->belongsTo(User::class);
     }
 }

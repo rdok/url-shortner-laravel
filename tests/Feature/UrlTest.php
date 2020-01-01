@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Url;
 use App\User;
 use Faker\Generator;
+use Mockery\Mock;
 use Tests\TestCase;
 
 class UrlTest extends TestCase
@@ -38,7 +39,7 @@ class UrlTest extends TestCase
 
         $this->assertDatabaseMissing('urls', ['target' => $this->url]);
 
-        $this->post('s/', ['url' => $this->url])
+        $this->post('urls', ['url' => $this->url])
             ->assertExactJson(['slug' => 'expected-slug', 'url' => $this->url])
             ->assertStatus(200);
 
@@ -51,32 +52,33 @@ class UrlTest extends TestCase
     /** @test */
     public function create_shortened_url_for_loggedin_users()
     {
-        $this->markTestIncomplete();
+        $user = factory(User::class)->create();
+        $this->mock(Generator::class, function ($mock) {
+            /** @var Mock $mock */
+            $mock->shouldReceive('regexify')->once()->andReturn('expected-uslug');
+        });
+
         $this->assertDatabaseMissing('urls', ['target' => $this->url]);
 
-        $user = factory(User::class)->create();
-
-        $this->actingAs($user)
-            ->post('s/', ['url' => $this->url])
-            ->assertExactJson(['slug' => 'some-slug', 'target' => $this->url])
+        $this
+            ->actingAs($user)
+            ->post('urls', ['url' => $this->url])
+            ->assertExactJson(['slug' => 'expected-uslug', 'url' => $this->url])
             ->assertStatus(200);
 
         $this->assertDatabaseHas('urls', [
-            'slug' => 'some-slug',
+            'slug' => 'expected-uslug',
             'target' => $this->url,
             'author_id' => $user->id
         ]);
     }
 
     /** @test */
-    public function should_not_generate_duplicate_short_urls()
+    public function should_validate_requests()
     {
-        $this->markTestIncomplete();
-    }
-
-    /** @test */
-    public function should_validate_creations()
-    {
-        $this->markTestIncomplete();
+        $this->post('urls')
+            ->assertExactJson([
+                'url' => ['The url field is required.']
+            ]);
     }
 }
