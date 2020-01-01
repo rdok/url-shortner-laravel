@@ -6,36 +6,29 @@ use Laravel\Dusk\Browser;
 
 class HomePage extends Page
 {
-    /**
-     * Get the URL for the page.
-     *
-     * @return string
-     */
+    public function assert(Browser $browser)
+    {
+        $browser->assertPathIs($this->url());
+    }
+
     public function url()
     {
         return '/';
     }
 
-    /**
-     * Assert that the browser is on the page.
-     *
-     * @param  \Laravel\Dusk\Browser  $browser
-     * @return void
-     */
-    public function assert(Browser $browser)
-    {
-        //
-    }
-
-    /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
-     */
     public function elements()
     {
         return [
-            '@element' => '#selector',
+            '@url' => 'input[name=url]',
+            '@shortened-link' => 'a[dusk=shortened-url-link]',
         ];
+    }
+
+    public function createShortLink(Browser $browser, $url)
+    {
+        $browser
+            ->type('@url', $url)
+            ->press('Shorten')
+            ->assertPathIs($this->url());
     }
 }

@@ -19,9 +19,8 @@ class UrlController extends Controller
     {
         $url = $repository->store($request->only('url'));
 
-        return response()->json([
-            'slug' => $url->slug,
-            'url' => $url->target,
-        ]);
+        session()->flash('urlId', $url->id);
+
+        return redirect('/');
     }
 }
