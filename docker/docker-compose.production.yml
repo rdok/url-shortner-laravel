@@ -7,7 +7,7 @@ services:
       context: web
       dockerfile: ./docker/php/production.docker
       args:
-        - COMPOSE_PROJECT_NAME
+        - DOCKER_REPO
     environment:
       - DB_PASSWORD
       - APP_KEY
@@ -21,7 +21,7 @@ services:
       context: web
       dockerfile: ./docker/web/production.docker
       args:
-        - COMPOSE_PROJECT_NAME
+        - DOCKER_REPO
     environment:
       - VIRTUAL_HOST
       - LETSENCRYPT_HOST

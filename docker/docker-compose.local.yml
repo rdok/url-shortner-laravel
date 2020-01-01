@@ -3,6 +3,7 @@ version: "3.7"
 services:
 
   php:
+    user: root
     volumes:
       - .:/var/www:rw
 

@@ -7,4 +7,4 @@ services:
       context: .
       dockerfile: ./docker/src/Dockerfile
       args:
-        - COMPOSE_PROJECT_NAME
+        - DOCKER_REPO
