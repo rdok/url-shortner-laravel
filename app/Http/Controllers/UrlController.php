@@ -8,6 +8,13 @@ use App\Url;
 
 class UrlController extends Controller
 {
+    public function index()
+    {
+        $urls = Url::query()->paginate();
+
+        return view('urls.index', compact('urls'));
+    }
+
     public function show($slug)
     {
         $url = Url::query()->where('slug', $slug)->firstOrFail();

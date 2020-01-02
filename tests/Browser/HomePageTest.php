@@ -21,4 +21,5 @@ class HomePageTest extends DuskTestCase
                 ->assertSeeIn('@shortened-link', 'View');
         });
     }
+
 }

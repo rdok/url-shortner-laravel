@@ -17,4 +17,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('urls', 'UrlController')->only(['store']);
+Route::resource('urls', 'UrlController')->only(['index', 'store']);

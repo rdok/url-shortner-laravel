@@ -21,6 +21,7 @@ class HomePage extends Page
         return [
             '@url' => 'input[name=url]',
             '@shortened-link' => 'a[dusk=shortened-url-link]',
+            '@shortened-link-badge' => 'span[dusk=shortened-url-link-badge]',
         ];
     }
 
