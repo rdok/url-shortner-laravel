@@ -1,3 +1,5 @@
+ARG COMPOSE_PROJECT_NAME
+
 FROM ${COMPOSE_PROJECT_NAME}_php
 WORKDIR /app
 COPY composer.lock composer.json artisan ./
