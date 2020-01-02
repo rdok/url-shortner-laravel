@@ -9,50 +9,38 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-18.04
-    env:
-      COMPOSE_PROJECT_NAME: "url-shortner-laravel"
-
     steps:
       - uses: actions/checkout@v1
-
       - name: Build Docker images
         run: |
           cp .env.example .env
           source aliases.sh
           docker_compose_dev up -d
-
       - name: Install PHP packages
         run: source aliases.sh && docker_compose_dev exec -T php composer install --no-progress --no-ansi
-
       - name: Run db migrations
         run: |
           source aliases.sh
           docker_compose_dev exec -T php php artisan migrate
           docker_compose_dev exec -T php php artisan migrate --env=testing
           docker_compose_dev exec -T php php artisan migrate --env=dusk.local
-
-      - name: Install NPM packages
+      - name: Install Node packages
         run: |
           source aliases.sh
           docker run --rm -v "$(pwd)":"/app" -w /app node:8-alpine3.11 npm install
-
-      - name: Generate frontend assets
+      - name: Transpile frontend assets
         run: |
           source aliases.sh
-          docker run --rm -v "$(pwd)":"/app" -w /app node:8-alpine3.11 npm run dev
-
+          docker run --rm -v "$(pwd)":"/app" -w /app node:8-alpine3.11 npm run production
       - name: Run unit, integration, and feature tests
         run: source aliases.sh && docker_compose_dev exec -T php php ./vendor/bin/phpunit
-
       - name: Run browser tests
         run: |
           source aliases.sh
           docker_compose_dev run --rm dusk php artisan dusk:chrome-driver 79
           sudo chown -R 82:82 .
           docker_compose_dev run --rm dusk php artisan dusk
-
       - name: Archive failed tests artifacts
         if: failure()
         uses: actions/upload-artifact@v1

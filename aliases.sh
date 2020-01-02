@@ -27,14 +27,14 @@ dmysql() {
     docker_compose_dev exec db mysql "$@"
 }
 
-dnpm() {
+dyarn() {
     docker run \
         --rm \
         --name "${PROJECT_NAME}_npm-dev" \
         --volume "/$(pwd)":"//app" \
         --workdir //app \
         -it \
-        node:8-alpine3.11 npm \
+        node:8-alpine3.11 yarnnpm \
         "$@"
 }
 

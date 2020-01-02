@@ -1,7 +1,7 @@
-ARG DOCKER_REPO
-FROM ${DOCKER_REPO}:src
+ARG COMPOSE_PROJECT_NAME
+FROM ${COMPOSE_PROJECT_NAME}_src
 
-FROM ${DOCKER_REPO}:php
+FROM ${COMPOSE_PROJECT_NAME}_php
 WORKDIR /var/www
 COPY --from=0 /app/ ./
 RUN chown -R www-data:www-data .

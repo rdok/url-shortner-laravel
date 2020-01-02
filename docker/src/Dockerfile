@@ -1,17 +1,16 @@
-ARG DOCKER_REPO
+ARG COMPOSE_PROJECT_NAME
 
 FROM node:8-alpine3.11
 WORKDIR /app
-COPY package.json package-lock.json webpack.mix.js ./
+COPY package.json yarn.lock webpack.mix.js ./
 COPY resources ./resources/
-RUN npm install \
-    && npm run production \
+RUN yarn install \
+    && yarn run production \
     && rm -rf node_modules
 
 
 
-FROM ${DOCKER_REPO}:php
-#FROM rdok/url-shortner-laravel:php
+FROM ${COMPOSE_PROJECT_NAME}_php
 WORKDIR /app
 COPY composer.lock composer.json artisan ./
 COPY app ./app/
