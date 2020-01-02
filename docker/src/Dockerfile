@@ -16,4 +16,3 @@ RUN composer install --no-progress --no-dev --no-suggest \
     && composer clear-cache
 
 COPY . .
-COPY --from=0 /app/public ./public/
