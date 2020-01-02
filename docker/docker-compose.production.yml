@@ -4,10 +4,10 @@ services:
 
   php:
     build:
-      context: web
+      context: .
       dockerfile: ./docker/php/production.docker
       args:
-        - DOCKER_REPO
+        - COMPOSE_PROJECT_NAME
     environment:
       - DB_PASSWORD
       - APP_KEY
@@ -16,12 +16,13 @@ services:
       /wait-for db:3306
       && php-fpm
       "
+
   web:
     build:
-      context: web
+      context: .
       dockerfile: ./docker/web/production.docker
       args:
-        - DOCKER_REPO
+        - COMPOSE_PROJECT_NAME
     environment:
       - VIRTUAL_HOST
       - LETSENCRYPT_HOST
@@ -29,6 +30,7 @@ services:
     networks:
       - frontend
       - backend
+
 networks:
   frontend:
     external:

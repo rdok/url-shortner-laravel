@@ -1,3 +1,6 @@
+### URL Shortner Laravel
+[![Build Status](https://jenkins.rdok.dev/buildStatus/icon?job=url-shortner-laravel%2Frelease)](https://jenkins.rdok.dev/job/url-shortner-laravel/job/release/)
+
 ### Development
 Only dependency docker & docker-compose
 
