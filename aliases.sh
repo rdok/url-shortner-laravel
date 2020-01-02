@@ -34,7 +34,7 @@ dyarn() {
         --volume "/$(pwd)":"//app" \
         --workdir //app \
         -it \
-        node:8-alpine3.11 yarnnpm \
+        node:8-alpine3.11 yarn \
         "$@"
 }
 

@@ -25,14 +25,6 @@ jobs:
           docker_compose_dev exec -T php php artisan migrate
           docker_compose_dev exec -T php php artisan migrate --env=testing
           docker_compose_dev exec -T php php artisan migrate --env=dusk.local
-      - name: Install Node packages
-        run: |
-          source aliases.sh
-          docker run --rm -v "$(pwd)":"/app" -w /app node:8-alpine3.11 npm install
-      - name: Transpile frontend assets
-        run: |
-          source aliases.sh
-          docker run --rm -v "$(pwd)":"/app" -w /app node:8-alpine3.11 npm run production
       - name: Run unit, integration, and feature tests
         run: source aliases.sh && docker_compose_dev exec -T php php ./vendor/bin/phpunit
       - name: Run browser tests
