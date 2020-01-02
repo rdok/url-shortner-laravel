@@ -1,15 +1,5 @@
 ARG COMPOSE_PROJECT_NAME
 
-FROM node:8-alpine3.11
-WORKDIR /app
-COPY package.json yarn.lock webpack.mix.js ./
-COPY resources ./resources/
-RUN yarn install \
-    && yarn run production \
-    && rm -rf node_modules
-
-
-
 FROM ${COMPOSE_PROJECT_NAME}_php
 WORKDIR /app
 COPY composer.lock composer.json artisan ./
