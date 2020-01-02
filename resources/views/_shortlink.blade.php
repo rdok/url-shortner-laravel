@@ -7,6 +7,8 @@
                 class="card-link"
                 dusk="shortened-url-link"
         >View</a>
-        <span class="badge badge-pill badge-success">{{ url($url->path()) }}</span>
+        <span class="badge badge-pill badge-success" dusk="shortened-url-link-badge">
+            {{ url($url->path()) }}
+        </span>
     </div>
 @endif

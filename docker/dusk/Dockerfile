@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
         wget \
         unzip \
         libu2f-udev \
-  && docker-php-ext-install zip
+  && docker-php-ext-install zip pdo_mysql
 
 WORKDIR /tmp
 
