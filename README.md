@@ -11,8 +11,8 @@ source aliases.sh
 docker_compose_dev up -d
 dcomposer install
 dphp artisan migrate
-dnpm install
-dnpm run dev
+dyarn install
+dyarn run dev
 
 # visit http://localhost:3001
 ```
@@ -24,8 +24,12 @@ dmysql -uroot -psecret
 
 **Test**
 ```
+dyarn install
+dyarn run test
+
 dphp artisan migrate --env=testing
 dphp ./vendor/bin/phpunit
+
 dphp artisan migrate --env=dusk.local
 ddusk
 ```

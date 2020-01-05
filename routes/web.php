@@ -2,6 +2,21 @@
 
 use App\Url;
 
+Route::get('/welcome2', function () {
+    return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('urls', 'UrlController')->only(['index', 'store']);
+
+
+Route::get('react', function () {
+    return view('react');
+});
+
 Route::get('/', function () {
     $data = [];
 
@@ -10,11 +25,5 @@ Route::get('/', function () {
         $data = compact('url');
     }
 
-    return view('welcome', $data);
+    return view('welcome2', $data);
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::resource('urls', 'UrlController')->only(['index', 'store']);

@@ -11,10 +11,6 @@ docker_compose_dev() {
         "$@"
 }
 
-dphp() {
-    docker_compose_dev exec php php "$@"
-}
-
 dpt() {
     docker_compose_dev exec php php ./vendor/bin/phpunit "$@"
 }
@@ -28,16 +24,22 @@ dmysql() {
 }
 
 dyarn() {
-    docker run \
-        --rm \
-        --name "${PROJECT_NAME}_npm-dev" \
-        --volume "/$(pwd)":"//app" \
-        --workdir //app \
-        -it \
-        node:8-alpine3.11 yarn \
-        "$@"
+    dnode yarn "$@"
+}
+
+dnode() {
+    docker_compose_dev exec node "$@"
 }
 
 ddusk() {
   docker_compose_dev run --rm dusk php artisan dusk "$@"
 }
+
+php() {
+    docker_compose_dev exec php php "$@"
+}
+
+app() {
+    docker_compose_dev exec php "$@"
+}
+

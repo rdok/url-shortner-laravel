@@ -5,13 +5,25 @@ services:
   php:
     user: root
     volumes:
-      - .:/var/www:rw
+      - .:/var/www
 
   web:
     ports:
       - "${APP_PORT}:80"
     volumes:
-      - .:/var/www:rw
+      - .:/var/www
+
+  node:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/node/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+    - 8080:8080
+    working_dir: /app
+    command: tail -f /dev/null
 
   dusk:
     volumes:
