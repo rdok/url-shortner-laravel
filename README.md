@@ -24,8 +24,12 @@ dmysql -uroot -psecret
 
 **Test**
 ```
+dyarn install
+dyarn run test
+
 dphp artisan migrate --env=testing
 dphp ./vendor/bin/phpunit
+
 dphp artisan migrate --env=dusk.local
 ddusk
 ```

@@ -27,6 +27,11 @@ jobs:
           docker_compose_dev exec -T php php artisan migrate --env=dusk.local
       - name: Run unit, integration, and feature tests
         run: source aliases.sh && docker_compose_dev exec -T php php ./vendor/bin/phpunit
+      - name: Jest
+        run: |
+          source aliases.sh
+          dyarn install
+          dyarn run test
       - name: Run browser tests
         run: |
           source aliases.sh
