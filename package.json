@@ -8,11 +8,17 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "yarn run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "test": "jest"
+        "test": "jest --config jest.config.js"
     },
     "devDependencies": {
-        "@babel/preset-react": "^7.0.0",
+        "@babel/core": "^7.7.7",
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+        "@babel/plugin-proposal-throw-expressions": "^7.7.4",
+        "@babel/preset-env": "^7.7.7",
+        "@babel/preset-react": "^7.7.4",
         "axios": "^0.19",
+        "babel-jest": "^24.9.0",
         "bootstrap": "^4.0.0",
         "cross-env": "^5.1",
         "jquery": "^3.2",
@@ -26,6 +32,7 @@
         "sass-loader": "7.*"
     },
     "dependencies": {
-        "jest": "^24.9.0"
+        "jest": "^24.9.0",
+        "react-scripts": "^3.3.0"
     }
 }

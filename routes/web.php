@@ -3,14 +3,7 @@
 use App\Url;
 
 Route::get('/', function () {
-    $data = [];
-
-    if (session()->has('urlId')) {
-        $url = Url::query()->findOrFail(session('urlId'));
-        $data = compact('url');
-    }
-
-    return view('welcome', $data);
+    return view('welcome');
 });
 
 Auth::routes();
@@ -22,4 +15,15 @@ Route::resource('urls', 'UrlController')->only(['index', 'store']);
 
 Route::get('react', function () {
     return view('react');
+});
+
+Route::get('/welcome2', function () {
+    $data = [];
+
+    if (session()->has('urlId')) {
+        $url = Url::query()->findOrFail(session('urlId'));
+        $data = compact('url');
+    }
+
+    return view('welcome2', $data);
 });

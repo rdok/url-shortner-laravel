@@ -24,15 +24,11 @@ dmysql() {
 }
 
 dyarn() {
-    docker run \
-        --rm \
-        --name "${PROJECT_NAME}_npm-dev" \
-        --volume "/$(pwd)":"//app" \
-        --publish 8080:8080 \
-        --workdir //app \
-        -it \
-        node:8-alpine3.11 yarn \
-        "$@"
+    dnode yarn "$@"
+}
+
+dnode() {
+    docker_compose_dev exec node "$@"
 }
 
 ddusk() {
