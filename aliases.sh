@@ -11,10 +11,6 @@ docker_compose_dev() {
         "$@"
 }
 
-dphp() {
-    docker_compose_dev exec php php "$@"
-}
-
 dpt() {
     docker_compose_dev exec php php ./vendor/bin/phpunit "$@"
 }
@@ -32,6 +28,7 @@ dyarn() {
         --rm \
         --name "${PROJECT_NAME}_npm-dev" \
         --volume "/$(pwd)":"//app" \
+        --publish 8080:8080 \
         --workdir //app \
         -it \
         node:8-alpine3.11 yarn \
@@ -41,3 +38,12 @@ dyarn() {
 ddusk() {
   docker_compose_dev run --rm dusk php artisan dusk "$@"
 }
+
+php() {
+    docker_compose_dev exec php php "$@"
+}
+
+app() {
+    docker_compose_dev exec php "$@"
+}
+

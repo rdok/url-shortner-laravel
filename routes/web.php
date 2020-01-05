@@ -18,3 +18,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('urls', 'UrlController')->only(['index', 'store']);
+
+
+Route::get('react', function () {
+    return view('react');
+});

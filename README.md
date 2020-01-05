@@ -11,8 +11,8 @@ source aliases.sh
 docker_compose_dev up -d
 dcomposer install
 dphp artisan migrate
-dnpm install
-dnpm run dev
+dyarn install
+dyarn run dev
 
 # visit http://localhost:3001
 ```
