@@ -24,4 +24,14 @@ describe('Welcome', () => {
             render(<Welcome/>, container);
         })
     })
+
+    // it('renders anonymous shortened urls', async () => {
+    //     await act(async () => {
+    //         render(<Welcome httpClient={client}/>, container);
+    //     })
+    //
+    //     const element = container.querySelector("[data-testid=anonymous-shortened-urls]")
+    //
+    //     expect(element.textContent).toBe(fakeUser.name);
+    // })
 });

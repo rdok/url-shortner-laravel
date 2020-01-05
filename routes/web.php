@@ -2,7 +2,7 @@
 
 use App\Url;
 
-Route::get('/', function () {
+Route::get('/welcome2', function () {
     return view('welcome');
 });
 
@@ -17,7 +17,7 @@ Route::get('react', function () {
     return view('react');
 });
 
-Route::get('/welcome2', function () {
+Route::get('/', function () {
     $data = [];
 
     if (session()->has('urlId')) {

@@ -30,8 +30,8 @@ jobs:
       - name: Jest
         run: |
           source aliases.sh
-          dyarn install
-          dyarn run test
+          docker_compose_dev exec -T node yarn install
+          docker_compose_dev exec -T node yarn test
       - name: Run browser tests
         run: |
           source aliases.sh
