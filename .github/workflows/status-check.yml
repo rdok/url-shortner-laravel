@@ -11,36 +11,60 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
+      - run: |
+          export GID="$(id -g)"
       - uses: actions/checkout@v1
+      - name: Patch actions/cache@v1 to cache docker images
+        run: |
+          source aliases.sh
+          docker system prune --all --force
+          sudo chown -R "$(id -u):$(id -g)" /var/lib/docker
+      - name: Cache Docker images
+        id: cache-docker-images
+        uses: actions/cache@v1
+        with:
+          path: /var/lib/docker
+          key: ${{ runner.os }}-docker-${{ hashFiles('docker/**') }}
       - name: Build Docker images
         run: |
-          cp .env.example .env
-          source aliases.sh
+          cp .env.testing .env
+          source aliases.sh 
           docker_compose_dev up -d
+      - name: Cache PHP packages
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
       - name: Install PHP packages
         run: source aliases.sh && docker_compose_dev exec -T php composer install --no-progress --no-ansi
-      - name: Run db migrations
+#      - name: Run db migrations
+#        run: |
+#          source aliases.sh
+#          docker_compose_dev exec -T php php artisan migrate --env=testing
+#          docker_compose_dev exec -T php php artisan migrate --env=dusk.local
+#      - name: Run unit, integration, and feature tests
+#        run: source aliases.sh && docker_compose_dev exec -T php php ./vendor/bin/phpunit
+#      - name: Jest
+#        run: |
+#          source aliases.sh
+#          docker_compose_dev exec -T node yarn install
+#          docker_compose_dev exec -T node yarn test
+#      - name: Run browser tests
+#        run: |
+#          source aliases.sh
+#          ddusk php artisan dusk:chrome-driver
+#          sudo chown -R 82:82 .
+#          ddusk php artisan dusk
+#      - name: Archive failed tests artifacts
+#        if: failure()
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: Screenshots
+#          path: tests/Browser/screenshots
+      - name: Docker cleanup
         run: |
           source aliases.sh
-          docker_compose_dev exec -T php php artisan migrate
-          docker_compose_dev exec -T php php artisan migrate --env=testing
-          docker_compose_dev exec -T php php artisan migrate --env=dusk.local
-      - name: Run unit, integration, and feature tests
-        run: source aliases.sh && docker_compose_dev exec -T php php ./vendor/bin/phpunit
-      - name: Jest
-        run: |
-          source aliases.sh
-          docker_compose_dev exec -T node yarn install
-          docker_compose_dev exec -T node yarn test
-      - name: Run browser tests
-        run: |
-          source aliases.sh
-          docker_compose_dev run --rm dusk php artisan dusk:chrome-driver 79
-          sudo chown -R 82:82 .
-          docker_compose_dev run --rm dusk php artisan dusk
-      - name: Archive failed tests artifacts
-        if: failure()
-        uses: actions/upload-artifact@v1
-        with:
-          name: Screenshots
-          path: tests/Browser/screenshots
+          docker_compose_dev down -v
+          docker system prune --all --force
+          docker container prune --force
+          sudo chown -R "$(id -u):$(id -g)" /var/lib/docker

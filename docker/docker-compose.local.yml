@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   php:
-    user: root
+    user: "${UID}:${GID}"
     volumes:
       - .:/var/www
 
@@ -34,4 +34,4 @@ services:
       dockerfile: ./docker/dusk/Dockerfile
     networks:
       - backend
-    command: "echo 'Done.'"
+    command: tail -f /dev/null

@@ -7,6 +7,8 @@ Only dependency docker & docker-compose
 ##### Install
 ```
 cp .env.example .env 
+# If your 'id -u' is not 1000, then update UID & GID
+
 source aliases.sh
 docker_compose_dev up -d
 dcomposer install
@@ -31,6 +33,7 @@ dphp artisan migrate --env=testing
 dphp ./vendor/bin/phpunit
 
 dphp artisan migrate --env=dusk.local
-ddusk
+ddusk php artisan dusk:chrome-driver
+ddusk php artisan dusk
 ```
 

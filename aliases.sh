@@ -32,10 +32,10 @@ dnode() {
 }
 
 ddusk() {
-  docker_compose_dev run --rm dusk php artisan dusk "$@"
+  docker_compose_dev exec dusk "$@"
 }
 
-php() {
+dphp() {
     docker_compose_dev exec php php "$@"
 }
 
