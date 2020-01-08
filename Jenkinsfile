@@ -4,7 +4,10 @@ pipeline {
         buildDiscarder( logRotator( numToKeepStr: '5' ) )
         disableConcurrentBuilds()
     }
-    triggers { githubPush() }
+    triggers { 
+        githubPush() 
+        cron('H H(18-19) * * *')
+    }
     environment {
         DB_PASSWORD = credentials('db-password')
         VIRTUAL_HOST = 'url-shortner-laravel.rdok.dev'
