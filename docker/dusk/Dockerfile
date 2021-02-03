@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
         libu2f-udev \
   && docker-php-ext-install zip pdo_mysql
 
+COPY ./docker/wait-for /wait-for
+RUN chmod +x /wait-for
+
 WORKDIR /tmp
 
 # Chrome Browser

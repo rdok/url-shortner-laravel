@@ -1,4 +1,8 @@
-start: .env
+start: up
+	$(info ********************************************************************************)
+	$(info               http://localhost:3001             									)
+
+up: .env
 	export UID=$$(id -u); export GID=$$(id -g); \
 		make docker-compose command='up -d --force-recreate'
 	make docker-compose command='exec php composer install'
@@ -33,8 +37,12 @@ phpunit:
 	cp .env.example .env
 
 dusk:
-	make docker-compose command='exec dusk php artisan migrate --env=dusk.local'
-	make docker-compose command='exec dusk php artisan dusk'
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='run --rm dusk bash -c "\
+		php artisan dusk:chrome-driver \
+        && php artisan migrate --env=dusk.local \
+        && php artisan dusk \
+	"'
 
 yarn-test:
 	make docker-compose command='exec node yarn test'

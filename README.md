@@ -2,7 +2,7 @@
 
 ### Development
 ```
-make # visit http://localhost:3001
+make
 ```
 
 ### Test

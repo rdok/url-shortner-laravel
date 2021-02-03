@@ -36,4 +36,8 @@ services:
       dockerfile: ./docker/dusk/Dockerfile
     networks:
       - backend
-    command: "echo 'Done.'"
+    command: bash -c "
+        /wait-for db:3306
+        && php artisan migrate --env=dusk.local
+        && php artisan dusk
+      "
