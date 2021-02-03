@@ -50,7 +50,7 @@ yarn-test-ci: up
 yarn-test:
 	make docker-compose command='exec node yarn test'
 
-db:
+db: .env
 	export UID=$$(id -u); export GID=$$(id -g); \
 	make docker-compose command='up -d db'
 
