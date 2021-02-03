@@ -18,9 +18,6 @@ node-shell:
 php-shell:
 	make docker-compose command='exec php sh'
 
-phpunit:
-	make docker-compose command='exec php php ./vendor/bin/phpunit'
-
 docker-compose: # usage: make docker-compose command='up -d'
 	docker-compose \
 		--project-directory "$(shell pwd)" \
@@ -29,12 +26,16 @@ docker-compose: # usage: make docker-compose command='up -d'
 		--file docker/docker-compose.local.yml \
 		$(command)
 
-phpunit:
-	make docker-compose command='exec php php artisan migrate --env=testing'
-	make docker-compose command='exec php ./vendor/bin/phpunit'
+phpunit: db
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='run --rm php php artisan migrate --env=testing'; \
+	make docker-compose command='run --rm php ./vendor/bin/phpunit'
 
 .env:
 	cp .env.example .env
+
+dusk-ci: up
+	sleep 15 && make dusk
 
 dusk:
 	export UID=$$(id -u); export GID=$$(id -g); \
@@ -44,5 +45,19 @@ dusk:
         && php artisan dusk \
 	"'
 
+yarn-test-ci: up
+	make yarn-test
 yarn-test:
 	make docker-compose command='exec node yarn test'
+
+db:
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='up -d db'
+
+down:
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='down'
+
+build:
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='build'
