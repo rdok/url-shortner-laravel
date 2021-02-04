@@ -26,11 +26,6 @@ docker-compose: # usage: make docker-compose command='up -d'
 		--file docker/docker-compose.local.yml \
 		$(command)
 
-phpunit-ci: up
-	export UID=$$(id -u); export GID=$$(id -g); \
-	make docker-compose command='run --rm php php artisan migrate --env=testing'; \
-	make docker-compose command='run --rm php ./vendor/bin/phpunit'
-
 phpunit: db
 	export UID=$$(id -u); export GID=$$(id -g); \
 	make docker-compose command='run --rm php php artisan migrate --env=testing'; \
@@ -39,8 +34,6 @@ phpunit: db
 .env:
 	cp .env.example .env
 
-dusk-ci: up
-	sleep 15 && make dusk
 
 dusk:
 	export UID=$$(id -u); export GID=$$(id -g); \
@@ -50,12 +43,6 @@ dusk:
         && php artisan dusk \
 	"'
 
-yarn-test-ci: .env
-	export UID=$$(id -u); export GID=$$(id -g) && \
-	make docker-compose command='build node' && \
-	make docker-compose command='up -d node' && \
-	make docker-compose command='exec -T node yarn install' && \
-	make docker-compose command='exec -T node yarn test'
 
 yarn-test:
 	make docker-compose command='exec node yarn test'
@@ -71,3 +58,31 @@ down:
 build:
 	export UID=$$(id -u); export GID=$$(id -g); \
 	make docker-compose command='build'
+
+
+
+################################################################################
+# CI
+################################################################################
+yarn-test-ci: .env
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='build node' && \
+	make docker-compose command='up -d node' && \
+	make docker-compose command='exec -T node yarn install' && \
+	make docker-compose command='exec -T node yarn test'
+
+dusk-ci: .env
+	sleep 15 && make dusk
+
+phpunit-ci: .env
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='build db' && \
+	make docker-compose command='up -d db' && \
+	make docker-compose command='build php' && \
+	make docker-compose command='up -d php' && \
+	make docker-compose command='run --rm -T php sh -c " \
+		composer install && \
+		php artisan migrate --env=testing && \
+	    ./vendor/bin/phpunit \
+	"'
+
