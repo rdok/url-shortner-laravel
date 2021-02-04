@@ -72,7 +72,19 @@ yarn-test-ci: .env
 	make docker-compose command='exec -T node yarn test'
 
 dusk-ci: .env
-	sleep 15 && make dusk
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='build' && \
+	make docker-compose command='up -d' && \
+	make docker-compose command='exec -T php composer install' && \
+	make docker-compose command='exec -T php php artisan migrate' && \
+	make docker-compose command='exec -T node yarn install' && \
+	make docker-compose command='exec -T node yarn dev' && \
+	sleep 15 && \
+	make docker-compose command='run --rm -T dusk bash -c " \
+		php artisan dusk:chrome-driver \
+        && php artisan migrate --env=dusk.local \
+        && php artisan dusk \
+	"'
 
 phpunit-ci: .env
 	export UID=$$(id -u); export GID=$$(id -g); \
