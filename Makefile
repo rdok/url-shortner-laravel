@@ -50,8 +50,13 @@ dusk:
         && php artisan dusk \
 	"'
 
-yarn-test-ci: up
-	make yarn-test
+yarn-test-ci: .env
+	export UID=$$(id -u); export GID=$$(id -g) && \
+	make docker-compose command='build node' && \
+	make docker-compose command='up -d node' && \
+	make docker-compose command='exec -T node yarn install' && \
+	make docker-compose command='exec -T node yarn test'
+
 yarn-test:
 	make docker-compose command='exec node yarn test'
 
