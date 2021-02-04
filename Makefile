@@ -26,6 +26,11 @@ docker-compose: # usage: make docker-compose command='up -d'
 		--file docker/docker-compose.local.yml \
 		$(command)
 
+phpunit-ci: up
+	export UID=$$(id -u); export GID=$$(id -g); \
+	make docker-compose command='run --rm php php artisan migrate --env=testing'; \
+	make docker-compose command='run --rm php ./vendor/bin/phpunit'
+
 phpunit: db
 	export UID=$$(id -u); export GID=$$(id -g); \
 	make docker-compose command='run --rm php php artisan migrate --env=testing'; \
