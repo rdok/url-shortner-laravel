@@ -36,4 +36,4 @@ services:
       dockerfile: ./docker/dusk/Dockerfile
     networks:
       - backend
-    command: "echo 'Done.'"
+    command: 'echo done'
