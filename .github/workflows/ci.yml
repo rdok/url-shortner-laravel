@@ -10,11 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make phpunit-ci
-  yarn-test:
+  jest:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - run: make yarn-test-ci
+      - run: make jest-ci
   dusk:
     runs-on: ubuntu-20.04
     steps:

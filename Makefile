@@ -64,7 +64,7 @@ build:
 ################################################################################
 # CI
 ################################################################################
-yarn-test-ci: .env
+jest-ci: .env
 	export UID=$$(id -u); export GID=$$(id -g); \
 	make docker-compose command='build node' && \
 	make docker-compose command='up -d node' && \
